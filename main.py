@@ -23,6 +23,7 @@ while True:
     upper_black = np.array([40, 40, 40], dtype="uint16")
 
     # покадровая маска
+    # todo шагать через несколько кадров
     mask_red = cv2.inRange(cv2.medianBlur(frame, 5), lower_red, upper_red)  # blured
     mask_black = cv2.inRange(frame, lower_black, upper_black)
 
@@ -47,12 +48,13 @@ while True:
     areas_space = [cv2.contourArea(c) for c in contours]
     ind_big_spaces = [i for i, x in enumerate(areas_space) if x > 15]
     epsareas = [epsareas[ind] for ind in ind_big_spaces]
+
     # Чистим входящие маленькие области
     for i in epsareas:
         for j in epsareas:
             xi, yi, wi, hi = i
             xj, yj, wj, hj = j
-            if (xi-10) < xj <= (xi+wi+10) and (yi-10) < yj <= (yi + 4*hi + 3):
+            if (xi-10) < xj <= (xi+wi+10) and (yi-10) < yj <= (yi + 4*hi + 5):
                 epsareas.remove(j)
 
 
