@@ -33,17 +33,26 @@ while True:
     ret, thresh = cv2.threshold(mask_red, 127, 255, cv2.THRESH_TOZERO)
     _, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  # разобраться
 
-    # тут должен быть перебор по окрестностям
+    # поиск индекса с наибольшей площадью
     areas_space = [cv2.contourArea(c) for c in contours]
-    max_index = np.argmax(areas_space)  # поиск индекса с наибольшей площадью
+    max_index = np.argmax(areas_space)
     cnt = contours[max_index]
-    for light in contours:  # todo попробовать посмотреть area больше определённого размера
-                            # todo исключить, включённые в большие, маленькие кусочки областей
-        x, y, w, h = cv2.boundingRect(light)
-        # circle_rad = w/2
-        cv2.rectangle(frame, (x-10, y-10), (x + w+10, y + 4*h+5), (0, 0, 255), 2)
-        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+    #---------------------------------------------------
+
+    epsareas = [cv2.boundingRect(a) for a in contours]
+
+    # todo попробовать посмотреть area больше определённого размера
+    # todo исключить, включённые в большие, маленькие кусочки областей
+    for epsarea in epsareas:
+        x, y, w, h = epsarea
+        cv2.rectangle(frame, (x - 10, y - 10), (x + w + 10, y + 4 * h + 5), (0, 0, 255), 2)  # красный
+        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)  # зелёный
         cv2.imshow("Show", cv2.resize(frame, (800, 600)))
+
+    # for epsarea in contours:
+    #     x, y, w, h = cv2.boundingRect(epsarea)
+    #     # circle_rad = w/2
+
 
 
     # углы
