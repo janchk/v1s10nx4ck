@@ -35,7 +35,8 @@ while True:
     areas = [cv2.contourArea(c) for c in contours]
     max_index = np.argmax(areas)
     cnt = contours[max_index]
-    for light in contours:  # todo попробовать посмотреть area юольше определённого размера
+    for light in contours:  # todo попробовать посмотреть area больше определённого размера
+                            # todo исключить, включённые в большие, маленькие кусочки областей
         x, y, w, h = cv2.boundingRect(light)
         # circle_rad = w/2
         cv2.rectangle(frame, (x-10, y-10), (x + w+10, y + 4*h+5), (0, 0, 255), 2)
@@ -73,13 +74,11 @@ while True:
     # cv2.imshow("Show", frame)
     # Наложение маски
 
-
     rs = cv2.resize(gray, (800, 600))
     rs2 = cv2.resize(mask_red, (800, 600))
     rs3 = cv2.resize(thresh, (800, 600))
     rs4 = cv2.resize(red, (800, 600))
     rs5 = cv2.resize(mask_black, (800, 600))
-
 
     # Вывод
 
