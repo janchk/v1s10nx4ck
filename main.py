@@ -31,15 +31,16 @@ while True:
     ret, thresh = cv2.threshold(mask_red, 127, 255, cv2.THRESH_TOZERO)
     _, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  # разобраться
 
+    # тут должен быть перебор по окрестностям
     areas = [cv2.contourArea(c) for c in contours]
     max_index = np.argmax(areas)
     cnt = contours[max_index]
-
-    x, y, w, h = cv2.boundingRect(cnt)
-    circle_rad = w/2
-    cv2.rectangle(frame, (x-10, y-10), (x + w+10, y + 4*h+5), (0, 0, 255), 2)
-    cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-    cv2.imshow("Show", cv2.resize(frame, (800, 600)))
+    for light in contours:  # todo попробовать посмотреть area юольше определённого размера
+        x, y, w, h = cv2.boundingRect(light)
+        # circle_rad = w/2
+        cv2.rectangle(frame, (x-10, y-10), (x + w+10, y + 4*h+5), (0, 0, 255), 2)
+        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        cv2.imshow("Show", cv2.resize(frame, (800, 600)))
 
 
     # углы
@@ -81,14 +82,13 @@ while True:
 
 
     # Вывод
-    # rs4 = cv2.medianBlur(rs4, 5)
+
     cv2.imshow('gray', rs)
     cv2.imshow('mask_red', rs2)
     cv2.imshow('thresh', rs3)
     cv2.imshow('red', rs4)
     cv2.imshow('black', rs5)
-    # cv2.imshow("hsv", frame_threshed)
-    # cv2.imshow('imf', img)
+
     # Delay между кадрами в мс
     if cv2.waitKey(20) & 0xFF == ord('q'):
         break
