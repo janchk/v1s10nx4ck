@@ -4,6 +4,7 @@ import cv2
 cap = cv2.VideoCapture("C:/Users/janch/Desktop/validationset/akn.014.044.left.avi")
 
 while True:
+
     # Покадровое считывание
     ret, frame = cap.read()
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -19,6 +20,7 @@ while True:
 
     lower_black = np.array([0, 0, 0], dtype="uint16")
     upper_black = np.array([40, 40, 40], dtype="uint16")
+
     # покадровая маска
     mask_red = cv2.inRange(cv2.medianBlur(frame, 5), lower_red, upper_red)  # blured
     mask_black = cv2.inRange(frame, lower_black, upper_black)
@@ -32,8 +34,8 @@ while True:
     _, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  # разобраться
 
     # тут должен быть перебор по окрестностям
-    areas = [cv2.contourArea(c) for c in contours]
-    max_index = np.argmax(areas)
+    areas_space = [cv2.contourArea(c) for c in contours]
+    max_index = np.argmax(areas_space)  # поиск индекса с наибольшей площадью
     cnt = contours[max_index]
     for light in contours:  # todo попробовать посмотреть area больше определённого размера
                             # todo исключить, включённые в большие, маленькие кусочки областей
