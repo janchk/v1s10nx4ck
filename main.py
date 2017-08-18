@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 
+
 cap = cv2.VideoCapture("C:/Users/janch/Desktop/validationset/akn.014.044.left.avi")
 
 while True:
@@ -12,7 +13,7 @@ while True:
 
     # границы красного цвета BGR
     lower_red = np.array([0, 0, 110], dtype="uint8")
-    upper_red = np.array([80, 80, 255], dtype="uint8")
+    upper_red = np.array([100, 100, 255], dtype="uint8")
 
     # границы красного цвета HSV
     # lower_red_hsv = np.array([150, 0, 0], np.uint8)
@@ -34,15 +35,27 @@ while True:
     _, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  # разобраться
 
     # поиск индекса с наибольшей площадью
-    areas_space = [cv2.contourArea(c) for c in contours]
-    max_index = np.argmax(areas_space)
-    cnt = contours[max_index]
+    # areas_space = [cv2.contourArea(c) for c in contours]
+    # max_index = np.argmax(areas_space)
+    # cnt = contours[max_index]
     #---------------------------------------------------
 
+    # Определяем окрестность
     epsareas = [cv2.boundingRect(a) for a in contours]
 
-    # todo попробовать посмотреть area больше определённого размера
-    # todo исключить, включённые в большие, маленькие кусочки областей
+    # Убираем слишком маленькие области
+    areas_space = [cv2.contourArea(c) for c in contours]
+    ind_big_spaces = [i for i, x in enumerate(areas_space) if x > 15]
+    epsareas = [epsareas[ind] for ind in ind_big_spaces]
+    # Чистим входящие маленькие области
+    for i in epsareas:
+        for j in epsareas:
+            xi, yi, wi, hi = i
+            xj, yj, wj, hj = j
+            if (xi-10) < xj <= (xi+wi+10) and (yi-10) < yj <= (yi + 4*hi + 3):
+                epsareas.remove(j)
+
+
     for epsarea in epsareas:
         x, y, w, h = epsarea
         cv2.rectangle(frame, (x - 10, y - 10), (x + w + 10, y + 4 * h + 5), (0, 0, 255), 2)  # красный
@@ -56,8 +69,8 @@ while True:
 
 
     # углы
-    cornerss = cv2.goodFeaturesToTrack(mask_black, 25, 0.01, 10)
-    corners = np.array(cornerss)
+    # cornerss = cv2.goodFeaturesToTrack(mask_black, 25, 0.01, 10)
+    # corners = np.array(cornerss)
 
 
     # контур
@@ -68,10 +81,10 @@ while True:
     #     x, y = i.ravel()
     #     cv2.circle(mask_black, (x, y), 35, 255, -1)
 
-    # Курги
-    # bgray = cv2.medianBlur(mask_red, 5)
-    # bgray = cv2.resize(bgray, (800, 600))
-    # circles = cv2.HoughCircles(mask_red, cv2.HOUGH_GRADIENT, 2, 5)
+    # # Курги
+    # # bgray = cv2.medianBlur(gray, 5)
+    # bgray = cv2.resize(gray, (800, 600))
+    # circles = cv2.HoughCircles(bgray, cv2.HOUGH_GRADIENT, 1.2, 5)
     # if circles is not None:
     #     # convert the (x, y) coordinates and radius of the circles to integers
     #     circles = np.round(circles[0, :]).astype("int")
@@ -80,9 +93,9 @@ while True:
     #     for (x, y, r) in circles:
     #         # draw the circle in the output image, then draw a rectangle
     #         # corresponding to the center of the circle
-    #         cv2.circle(mask_red, (x, y), r, (0, 255, 0), 4)
-    #         cv2.rectangle(mask_red, (x - 5, y - 5), (x + 5, y + 5), (0, 128, 255), -1)
-    # cv2.imshow("Show", frame)
+    #         cv2.circle(bgray, (x, y), r, (0, 255, 0), 4)
+    #         cv2.rectangle(bgray, (x - 5, y - 5), (x + 5, y + 5), (0, 128, 255), -1)
+    # cv2.imshow("Show", bgray)
     # Наложение маски
 
     rs = cv2.resize(gray, (800, 600))
