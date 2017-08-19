@@ -16,14 +16,6 @@ def epsareas_func(contours, s_frame, frame_number):
     ind_big_spaces = [i for i, x in enumerate(areas_space) if x > 40]
     epsareas = [epsareas[ind] for ind in ind_big_spaces]
 
-    # Чистим входящие маленькие области
-    # for i in epsareas:
-    #     for j in epsareas:
-    #         xi, yi, wi, hi = i
-    #         xj, yj, wj, hj = j
-    #         if (xi-10) < xj <= (xi+wi+10) and (yi-10) < yj <= (yi + 4*hi + 5):
-    #             epsareas.remove(j)
-
 
     for epsarea in epsareas:
 
