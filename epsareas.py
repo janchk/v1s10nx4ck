@@ -7,7 +7,7 @@ green_lw = np.array([47, 148, 3], dtype='uint8')
 
 def epsareas_func(contours, s_frame, frame_number):
 
-    black = np.zeros([1080, 1920, 1], dtype="uint8") # для фильтра
+    black = np.zeros([1080, 1920, 1], dtype="uint8")  # для фильтра
     # Определяем окрестность
     epsareas = [cv2.boundingRect(a) for a in contours]
 
