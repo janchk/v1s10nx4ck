@@ -73,7 +73,7 @@ def main(frame_count, kernel, red_mask_mass, filename):
     return -1
 
 start_time = time.time()
-text_file = "C:/Users/janch/PycharmProjects/visionhack/output1_rev3.txt"
+text_file = "C:/Users/janch/PycharmProjects/visionhack/output1_rev4.txt"
 # r = re.compile(".*avi")
 files = [f for f in os.listdir('C:/Users/janch/Desktop/validationset')]
 # files = filter(r.match, files)

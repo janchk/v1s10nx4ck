@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-kernel = np.ones((3, 3), np.uint8)
+kernel = np.ones((5, 5), np.uint8)
 
 
 def epsareas_func(contours_red, s_frame, frame_number, filename, black):
@@ -10,7 +10,7 @@ def epsareas_func(contours_red, s_frame, frame_number, filename, black):
     # green_lw = np.array([210, 200, 18], dtype='uint8') # 213 204 7
     # hsv green
     green_up = np.array([99, 255, 255], dtype='uint8')
-    green_lw = np.array([87, 100, 100], dtype='uint8')  # 213 204 7
+    green_lw = np.array([50, 100, 100], dtype='uint8')  # 87 100 100
 
     s_frame = cv2.cvtColor(s_frame, cv2.COLOR_BGR2HSV)
 
@@ -54,5 +54,5 @@ def epsareas_func(contours_red, s_frame, frame_number, filename, black):
     cv2.putText(masked, ("%s" % frame_number), (15, 25), cv2.FONT_HERSHEY_SIMPLEX, 1, [255, 255, 255])
     # cv2.imshow(filename, masked)
     # cv2.imshow("GRMasked", grn_masked)
-    if np.any([contours_grn[i].size > 10 for i in range(0, len(contours_grn))]):
-        return frame_number
+    if np.any([contours_grn[i].size > 5 for i in range(0, len(contours_grn))]):
+        return frame_number + 3
