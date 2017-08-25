@@ -3,20 +3,27 @@ import cv2
 import time
 import os
 from epsareas import epsareas_func
-# todo меньше область, меньше 30
 
 
 
 def main(frame_count, kernel, red_mask_mass, filename):
-    frame_skp = 2
+    frame_skip = 1 # не работает
     frame_size_mult = 0.8
 
     # границы красного цвета BGR
     lower_red = np.array([0, 0, 120], dtype="uint8")  # 198, 110
     upper_red = np.array([100, 100, 255], dtype="uint8")
+
+    # границы красного цвета HSV
+    # lower_red = np.array([0, 0, 120], dtype="uint8")  # 198, 110
+    # upper_red = np.array([100, 100, 255], dtype="uint8")
+
+
+    lower_black = 0
+    upper_black = 0
     while True:
-        cap.set(cv2.CAP_PROP_POS_FRAMES, frame_count)
-        if frame_count % frame_skp == 0:
+        # cap.set(cv2.CAP_PROP_POS_FRAMES, frame_count)
+        if frame_count % frame_skip == 0:
             try:
                 ret1, s_frame = cap.read()
                 # s_frame = cv2.resize(s_frame, (int(cap_w * frame_size_mult), int(cap_h * frame_size_mult)),
@@ -51,14 +58,13 @@ def main(frame_count, kernel, red_mask_mass, filename):
             ret, thresh = cv2.threshold(sum_rmask, 127, 255, cv2.THRESH_BINARY)
             _, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  # разобраться
 
-
             res = epsareas_func(contours, s_frame, frame_count, filename, black)
             if res:
                 return res
-            frame_count += frame_skp #
+            frame_count += frame_skip  #
         else:
-            frame_count += 1 #
-        # frame = copy.copy(s_frame)[0:640, 0:1920]  # кадр для рисования, пусть будет
+            # ret1, s_frame = cap.read()
+            frame_count += 1  #
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             print(-1)
@@ -67,14 +73,13 @@ def main(frame_count, kernel, red_mask_mass, filename):
     return -1
 
 start_time = time.time()
-text_file = "C:/Users/janch/PycharmProjects/visionhack/output1_rev2.txt"
+text_file = "C:/Users/janch/PycharmProjects/visionhack/output1_rev3.txt"
 # r = re.compile(".*avi")
 files = [f for f in os.listdir('C:/Users/janch/Desktop/validationset')]
 # files = filter(r.match, files)
 
 for file in files:
     filepath = ('C:/Users/janch/Desktop/validationset/%s' % file)
-
 
     cap_timestart = time.time()
 
