@@ -66,14 +66,14 @@ def main(frame_count, kernel, red_mask_mass, filename):
             # ret1, s_frame = cap.read()
             frame_count += 1  #
 
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        if cv2.waitKey(50) & 0xFF == ord('q'):
             print(-1)
             break
 
     return -1
 
 start_time = time.time()
-text_file = "C:/Users/janch/PycharmProjects/visionhack/output1_rev4.txt"
+text_file = "C:/Users/janch/PycharmProjects/visionhack/output1_rev7.txt"
 # r = re.compile(".*avi")
 files = [f for f in os.listdir('C:/Users/janch/Desktop/validationset')]
 # files = filter(r.match, files)
@@ -91,7 +91,7 @@ for file in files:
 
     # cv2.imshow("s_frm", s_frame)
     frame_count = 0
-    kernel = np.ones((5, 5), np.uint8)
+    kernel = np.ones((4, 4), np.uint8)  # ядро для красного цвета
     red_mask_mass = []
 
     out = main(frame_count, kernel, red_mask_mass, file)

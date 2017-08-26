@@ -34,8 +34,8 @@ def epsareas_func(contours_red, s_frame, frame_number, filename, black):
         # greenareas = [cv2.boundingRect(cgrn) for cgrn in contours_grn]
 
         # s_red_light = w * h
-        adv_red_mask1 = cv2.rectangle(s_frame, (x - int(w/3), y - int(h/3)),
-                                     (x + w + int(w/3), y + 3 * h + int(h/3)), (0, 0, 255), 2)  # белая область
+        # adv_red_mask = cv2.rectangle(adv_red_mask, (x - int(w/3), y - int(h/3)),
+        #                              (x + w + int(w/3), y + 3 * h + int(h/3)), (255, 255, 255), -1)  # белая область
         adv_red_mask = cv2.rectangle(adv_red_mask, (x - int(w/3), y + int(h)),
                                       (x + w + int(w / 3), y + 3 * h + int(h / 3)), (255, 255, 255), -1)
         cv2.rectangle(s_frame, (x, y), (x + w, y + h), (0, 255, 0), 2)  # зелёный квадрат
@@ -51,7 +51,7 @@ def epsareas_func(contours_red, s_frame, frame_number, filename, black):
     _, contours_grn, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     # greenareas = cv2.boundingRect(contours_grn)
     # показ картинки
-    cv2.putText(masked, ("%s" % frame_number), (15, 25), cv2.FONT_HERSHEY_SIMPLEX, 1, [255, 255, 255])
+    # cv2.putText(masked, ("%s" % frame_number), (15, 25), cv2.FONT_HERSHEY_SIMPLEX, 1, [255, 255, 255])
     # cv2.imshow(filename, masked)
     # cv2.imshow("GRMasked", grn_masked)
     if np.any([contours_grn[i].size > 5 for i in range(0, len(contours_grn))]):
