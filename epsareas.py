@@ -9,7 +9,7 @@ def epsareas_func(contours_red, s_frame, frame_number, filename, black):
     # green_up = np.array([121, 242, 0], dtype='uint8')
     # green_lw = np.array([210, 200, 18], dtype='uint8') # 213 204 7
     # hsv green
-    green_up = np.array([99, 255, 255], dtype='uint8')
+    green_up = np.array([92, 255, 255], dtype='uint8')
     green_lw = np.array([50, 100, 100], dtype='uint8')  # 87 100 100
 
     s_frame = cv2.cvtColor(s_frame, cv2.COLOR_BGR2HSV)

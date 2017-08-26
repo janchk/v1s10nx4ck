@@ -7,7 +7,7 @@ from epsareas import epsareas_func
 
 
 def main(frame_count, kernel, red_mask_mass, filename):
-    frame_skip = 1 # не работает
+    frame_skip = 1  # не работает
     frame_size_mult = 0.8
 
     # границы красного цвета BGR
@@ -73,7 +73,7 @@ def main(frame_count, kernel, red_mask_mass, filename):
     return -1
 
 start_time = time.time()
-text_file = "C:/Users/janch/PycharmProjects/visionhack/output1_rev7.txt"
+text_file = "C:/Users/janch/PycharmProjects/visionhack/output1_rev8.txt"
 # r = re.compile(".*avi")
 files = [f for f in os.listdir('C:/Users/janch/Desktop/validationset')]
 # files = filter(r.match, files)
